@@ -1,0 +1,454 @@
+---
+title: "Assignment 1"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1.a
+
+# Family of Normal Functions
+
+## rnorm() is the random number generator 
+
+```{r}
+# Generate a vector x of 1000 iid N(0, 1) values. 
+x = rnorm(n=1000, mean=0, sd=1)
+
+# Create a plot of x to visualise the data
+plot(x, main="1000 Random iid N(0, 1) Values")
+```
+```{r}
+# Create a histogram of x to visualise the data.
+hist(x, main="1000 iid N(0, 1) r.v.s", nclass = 50)
+```
+```{r}
+# Firstly we generate a vector x of 1000 iid N(0, 1) values. 
+x2 = (rnorm(n=1000, mean=0, sd=1))^2
+
+# Create a plot of x to visualise the data
+plot(x2, main="1000 iid N(0, 1) r.v.s Squared")
+```
+
+```{r}
+# Create a histogram of x to visualise the data.
+hist(x2, main="1000 iid N(0, 1) r.v.s Squared", nclass = 50)
+```
+
+## dnorm() is the density function
+
+```{r}
+# Using dnorm() to plot the PDF of x. ***Please do not mark***.
+
+# Plot the histogram of x on the density scale.
+hist(x,
+     probability = T,  
+     main="Histogram of 1000 Random iid N(0, 1) Values on the Density Scale", 
+     nclass = 50)
+
+# Create a grid of x values.
+x_grid=seq(-3,3,.01)
+
+# Calculate the vector of the corresponding values of x.
+density_grid=dnorm(x_grid, mean =0, sd=1)
+
+# Use the lines function to superimpose a line onto the histogram.
+lines(x_grid, density_grid, col='dark red', cex=3)
+```
+
+## pnorm() is the cumulative distribution function 
+  
+```{r}
+# Using pnorm() to plot the CDF of x. ***Please do not mark***.
+
+# Calculate the cdf.
+cdf_grid=pnorm(x_grid, mean=0, sd=1)
+
+# Create a plot of the cdf.
+plot(x_grid, cdf_grid, col='dark red', cex = .5,
+     main="CDF of N(0, 1)")
+```
+
+## qnorm() is the quantile function
+
+```{r}
+# Using qnorm() to find various quantiles. ***Please do not mark***.
+
+qnorm(0.95)
+qnorm(0.975)
+qnorm(0.995)
+qnorm(0.9995)
+qnorm(1-0.95)
+qnorm(1-0.975)
+qnorm(1-0.995)
+qnorm(1-0.9995)
+```
+# 1.b
+
+# Family of T Functions
+
+## rt() is the random number generator 
+
+```{r}
+# Generate a vector x of 1000 T-Distributed values. 
+x3 = rt(n=1000, df=10)
+
+# Create a plot of x to visualise the data
+plot(x3, main="1000 Random T-Distributed Values with 10 df")
+```
+```{r}
+# Create a histogram of x to visualise the data.
+hist(x3, main="1000 T-Distributed r.v.s with 10 df", nclass = 50)
+```
+
+```{r}
+# Generate a vector x of 1000 iid N(0, 1) values. 
+x4 = rt(n=1000, df=1000)
+
+# Create a plot of x to visualise the data
+plot(x4, main="1000 Random T-Distributed Values with 1000 df")
+```
+```{r}
+# Create a histogram of x to visualise the data.
+hist(x4, main="1000 T-Distributed r.v.s with 1000 df", nclass = 50)
+```
+Question: "How do these 2 histograms compare with the first histogram from part (a)?"
+
+Answer: There is a convergence in distribution between a Student's T distribution with mean $\mu$, $n$ degrees of freedom (df) and scale $\sigma^{2}$ and a Normal distribution with mean $\mu$ and variance $\sigma^{2}$ if the degrees of freedom $n$ becomes large (a convergence to infinity). 
+
+Therefore, the histogram with 1000 df is more normally distributed than the histogram with 10 df.
+
+This can be seen in subsection dt() the density function.
+
+Proof: Let $X_{n}$ be a t-distributed random variable (r.v) and be given by:
+
+$$X_{n}=\mu+\sigma \frac{Y}{\sqrt{\chi_{n}^{2} / n}}$$
+Where $Y$ in $N(0,1)$, and $\chi_{n}^{2}$ is a Chi-square r.v with $n$ df and is independent of $Y$.
+
+Furthermore, $\chi_{n}^{2}$ can be stated as a sum of identically and independently distributed $N(0,1)$ r.v.s $Z_{1}, \ldots, Z_{n}$:
+
+$$\chi_{n}^{2}=\sum_{i=1}^{n} Z_{i}^{2}$$
+Dividing both sides by $n$:
+
+$$\frac{\chi_{n}^{2}}{n}=\frac{1}{n} \sum_{i=1}^{n} Z_{i}^{2}$$
+
+As $n$ approaches infinity there is a convergence in the expected value of the probability of $Z_{i}^{2}$ to one via the law of large numbers:
+
+$$\mathrm{E}\left(Z_{i}^{2}\right)=1$$
+
+Therefore, $X_{n}$ converges in its distribution to: 
+
+$$X=\mu+\sigma Y$$
+Which is $N(\mu, \sigma^2)$.[1]
+
+## dt() is the density function
+
+```{r}
+# Using dt() to plot the PDF of x. ***Please do not mark***.
+
+# Plot the histogram of x on the density scale.
+hist(x3,
+     probability = "TRUE",  
+     main="1000 T-Distributed r.v.s with 10 df on the Density Scale",
+     nclass = 50)
+
+# Create a grid of x values.
+x_grid=seq(-3,3,.01)
+
+# Calculate the vector of the corresponding values of x.
+density_dt_grid=dt(x_grid, df = 10)
+
+# Use the lines function to superimpose a line onto the histogram.
+lines(x_grid, density_dt_grid, col='dark green', cex=3)
+```
+
+```{r}
+# Using dt() to plot the PDF of x. ***Please do not mark***.
+
+# Plot the histogram of x on the density scale.
+hist(x4,
+     probability = "TRUE",  
+     main="1000 T-Distributed r.v.s with 1000 df on the Density Scale",
+     nclass = 50)
+
+# Create a grid of x values.
+x_grid=seq(-3,3,.01)
+
+# Calculate the vector of the corresponding values of x.
+density_dt_grid=dt(x_grid, df = 1000)
+
+# Use the lines function to superimpose a line onto the histogram.
+lines(x_grid, density_dt_grid, col='dark green', cex=3)
+```
+
+## pt() is the cumulative distribution function 
+
+```{r}
+# Using pt() to plot the CDF of x. ***Please do not mark***.
+
+# Calculate the cdf.
+cdf_grid=pt(x_grid, df = 10)
+
+# Create a plot of the cdf.
+plot(x_grid, cdf_grid, col='dark green', cex = .5,
+     main= "CDF of the T-Distribution")
+```
+
+## qt() is the quantile function  
+
+```{r}
+# Using qt() to find various quantiles. ***Please do not mark***.
+
+qt(c(0.05, 0.95), df = 10)
+qt(c(0.025, 0.975), df = 10)
+qt(c(0.005, 0.995), df = 10)
+qt(c(0.0005, 0.9995), df = 10)
+```
+
+# 1.c
+
+# Family of Chisquare Functions
+
+## rchisq() is the random number generator 
+
+```{r}
+# Generate a vector x of 1000 chisquare r.v.s.
+x5 = rchisq(n=1000, df=1)
+
+# Create a plot of x to visualise the data
+plot(x5, main="1000 Random Chi-Square Values")
+```
+```{r}
+# Create a histogram of x to visualise the data.
+hist(x5, main="1000 Random Chi-Square Values", nclass=50)
+```
+
+Question: "How does this histogram compare with the second histogram from part (a)?"
+
+Answer: The histograms will be similar in appearance because the sum of iid $N(0,1)$ r.v.s is $\chi_{n}^{2}$.
+
+Letting $Z$ be $N(0,1)$ with square $X$:
+
+$$X=Z^{2}$$
+It follows that $X$ is a $\chi_{n}^{2}$ r.v with 1 df. [2]
+
+## dchisq() is the density function
+
+```{r}
+# Using dchisq() to plot the PDF of x. ***Please do not mark***.
+
+# Plot the histogram of x on the density scale.
+hist(x5,
+     probability = "TRUE",  
+     main="1000 Chi-Square r.v.s with 1 df on the Density Scale",
+     nclass=50)
+
+# Create a grid of x values.
+x_chisq_grid=seq(0, max(x5), 0.01)
+
+# Calculate the vector of the corresponding values of x.
+density_chisq_grid=dchisq(x_chisq_grid, df = 1)
+
+# Use the lines function to superimpose a line onto the histogram.
+lines(x_chisq_grid, density_chisq_grid, col='dark blue', cex=3)
+```
+
+## pchisq() is the cumulative distribution function 
+  
+```{r}
+# Using pchisq() to plot the CDF of x. ***Please do not mark***.
+
+# Calculate the cdf.
+cdf_grid=pchisq(x_chisq_grid, df = 1)
+
+# Create a plot of the cdf.
+plot(x_chisq_grid, cdf_grid, col='dark blue', cex = .5,
+     main="CDF of the Chi-Square Distribution")
+```
+
+## qchisq() is the quantile function
+
+```{r}
+# Using qt() to find various quantiles. ***Please do not mark***.
+
+qchisq(0.0005, df = 1)
+qchisq(0.005, df = 1)
+qchisq(0.025, df = 1)
+qchisq(0.05, df = 1)
+qchisq(0.05, df = 1)
+
+qchisq(0.95, df = 1)
+qchisq(0.975, df = 1)
+qchisq(0.995, df = 1)
+```
+# 1.d
+
+# Family of F Functions
+
+## rf() is the random number generator 
+
+```{r}
+# Generate a vector x of 1000 F-Distributed values. 
+x6 = rf(n=1000, df1 = 50, df2 = 10)
+
+# Create a plot of x to visualise the data
+plot(x, main="1000 Random F-Distributed Values")
+```
+```{r}
+# Create a histogram of x to visualise the data.
+hist(x6, main="1000 Random F-Distributed Values", nclass=50)
+```
+
+## df() is the density function
+
+```{r}
+# Using df() to plot the PDF of x. ***Please do not mark***.
+
+# Plot the histogram of x on the density scale.
+hist(x6,
+     probability = "TRUE",  
+     main="1000 F-Distributed r.v.s with df = 50 and df2 = 10 on the Density Scale",
+     nclass=50)
+
+# Create a grid of x values.
+x_f_grid=seq(0, max(x6), 0.01)
+
+# Calculate the vector of the corresponding values of x.
+density_f_grid=df(x_f_grid, df1 = 50, df2 = 10)
+
+# Use the lines function to superimpose a line onto the histogram.
+lines(x_f_grid, density_f_grid, col='orange', cex=3)
+```
+
+## pf() is the cumulative distribution function 
+
+```{r}
+# Using pf() to plot the CDF of x. ***Please do not mark***.
+
+# Calculate the cdf.
+cdf_grid=pf(x_f_grid, df1 = 50, df2 = 10)
+
+# Create a plot of the cdf.
+plot(x_f_grid, cdf_grid, col='orange', cex = .5,
+     main="CDF of the F Distribution")
+```
+
+## qf() is the quantile function  
+
+```{r}
+# Using qf() to find various quantiles. ***Please do not mark***.
+
+qf(0.0005, df1 = 50, df2 = 10)
+qf(0.005, df1 = 50, df2 = 10)
+qf(0.025, df1 = 50, df2 = 10)
+qf(0.05, df1 = 50, df2 = 10)
+qf(0.05, df1 = 50, df2 = 10)
+
+qf(0.95, df1 = 50, df2 = 10)
+qf(0.975, df1 = 50, df2 = 10)
+qf(0.995, df1 = 50, df2 = 10)
+```
+
+# 2.a
+
+```{r}
+data <- c(11.4, 15.1, 20.3,
+          12.0, 17.2, 21.5,
+          12.1, 14.8, 21.4,
+          13.0, 16.7, 21.3,
+          12.1, 13.8, 22.0,
+          12.5, 14.2, 20.9,
+          11.8, 15.7, 24.4,
+          11.7, 16.1, 21.1,
+          12.2, 13.2, 22.7,
+          10.8, 15.8, 21.9)
+
+m <- matrix(data = data, nrow = 10, ncol = 3, byrow = TRUE)
+
+m.t <- t(m)
+
+Tube <- m.t[1,]
+Bus <- m.t[2,]
+Bike <- m.t[3,]
+
+data <- c(Tube, Bus, Bike)
+
+t <- rep(c("Tube", "Bus", "Bike"), each=10)
+
+transport <- factor(t)
+
+type_of_transport <- data.frame(data, transport)
+```
+
+# 2.b
+
+```{r}
+type_of_transport_aov <- aov(data ~ transport, data = type_of_transport)
+summary(type_of_transport_aov)
+```
+
+In this case the value of the F-statistic is 226 with p-value <2e-16, so we reject the null hypothesis at the .1% significance level (also 1% and 5% respectively).
+
+We deduce that there is very strong evidence indeed that the type of transport has an effect on the length of commute.
+
+# 2.c
+
+Let $X_{1}, X_{2}, \ldots, X_{10} \sim N\left(\mu_{X}, \sigma_{X}^{2}\right)$ , $Y_{1}, Y_{2}, \ldots, Y_{10} \sim N\left(\mu_{Y}, \sigma_{Y}^{2}\right)$ and $Z_{1}, Z_{2}, \ldots, Z_{10} \sim N\left(\mu_{Z}, \sigma_{Z}^{2}\right)$ be independent random samples for tube, bus and bike respectively.
+
+```{r}
+sum(Tube)
+sum(Bus)
+sum(Bike)
+
+# User defined function to find the sum of squares for the different transport types.
+sum_of_square <- function(transport_type){
+        sum_ = sum(unlist(lapply(transport_type, function(x) x^2)))
+        return(sum_)
+}
+
+sum_of_square(Tube)
+sum_of_square(Bus)
+sum_of_square(Bike)
+```
+
+The observed statistics are given by:
+
+$$\sum_{i=1}^{10} x_{i}= 119.6, \sum_{i=1}^{10} x_{i}^{2}=1433.64, \sum_{j=1}^{10} y_{j}=152.6, \sum_{j=1}^{8} y_{j}^{2}=2343.44, \sum_{k=1}^{10} z_{k}=217.5, \sum_{k=1}^{10} z_{k}^{2}=4742.27$$
+Where $\mu_{i}$, $\sigma_{i}^{2}$ $i = X,Y,Z$ are unknown.
+
+
+
+[1] Taboga, Marco (2017). "Student's t distribution", Lectures on probability theory and mathematical statistics, Third edition. Kindle Direct Publishing. Online appendix. https://www.statlect.com/probability-distributions/student-t-distribution.
+
+[2] Taboga, Marco (2017). "Chi-square distribution", Lectures on probability theory and mathematical statistics, Third edition. Kindle Direct Publishing. Online appendix. https://www.statlect.com/probability-distributions/chi-square-distribution.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
