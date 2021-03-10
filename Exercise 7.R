@@ -78,5 +78,10 @@ detach()
 
 # Soil B contains an outlier at the 12.7 moisture percentage mark.
 
-# Soil A has the hightest median moisture content at 11.5%.
+# Soil A has the highest median moisture content at 11.5%.
+
+# Exercise 11.1
+
+library("multcomp")
+
 

@@ -21,6 +21,22 @@ attach(brix_degrees)
 brix_degrees.aov <- aov(data ~ location, data = brix_degrees)
 summary(brix_degrees.aov)
 
+# cht <- glht(model = brix_degrees.aov)
+# summary(cht, test = univariate())
+
+# In this example the A-B pair differs at the 5% level. With 
+# the small p-values we reject the null hypothesis that the
+# treatment location B is equal to location A.
+
+# fit: aov(formula = data ~ location, data = brix_degrees)
+
+# Linear Hypotheses:
+#        Estimate Std. Error t value Pr(>|t|)    
+#        (Intercept) == 0  80.7000     0.5361 150.526  < 2e-16 ***
+#        locationB == 0     2.5875     0.7582   3.413  0.00262 ** 
+#        locationC == 0     0.7625     0.7582   1.006  0.32602    
+---
+
 # 2.
 
 Soil_A <- c(12.8, 13.4, 11.2, 11.6, 9.4, 10.3, 14.1, 11.9, 10.5, 10.4)
@@ -48,6 +64,23 @@ summary(moisture_content_percentage.aov)
 # at the 1% significance level.
 
 # We deduce that there is very strong evidence indeed that the soil type influences the moisture content percentage.
+
+m <- mean(Soil_A)
+m
+
+tt <- qt(0.975, 36)
+tt
+
+MSr <- var(Soil_A)
+MSr
+
+SE <- sqrt(MSr/10)
+SE
+
+CI <- c(m - tt * SE, m + tt * SE)
+CI
+
+
 
 # 3.
 
